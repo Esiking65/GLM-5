@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0ea5b7" />
+  <meta name="description" content="دستیار هوشمند ویزیتور فیس دوکس - تحلیل بازار، مقایسه رقبا و پاسخ‌های علمی پزشکی" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="فیس دوکس" />
+
+  <title>دستیار هوشمند فیس دوکس</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="app">
+
+    <!-- هدر -->
+    <header class="app-header">
+      <div class="header-inner">
+        <div class="logo">
+          <span class="logo-icon">FD</span>
+          <div class="logo-text">
+            <h1>فیس دوکس</h1>
+            <small>دستیار هوشمند ویزیتور</small>
+          </div>
+        </div>
+        <div class="status-indicator" id="statusIndicator" title="وضعیت اتصال">
+          <span class="status-dot online"></span>
+          <span id="statusText">آنلاین</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- نوار تب‌ها -->
+    <nav class="tabs" role="tablist">
+      <button class="tab active" data-tab="home" role="tab">
+        <span class="tab-icon">🏠</span>
+        <span>خانه</span>
+      </button>
+      <button class="tab" data-tab="products" role="tab">
+        <span class="tab-icon">💊</span>
+        <span>محصولات</span>
+      </button>
+      <button class="tab" data-tab="chat" role="tab">
+        <span class="tab-icon">💬</span>
+        <span>گفتگو</span>
+      </button>
+      <button class="tab" data-tab="reports" role="tab">
+        <span class="tab-icon">📊</span>
+        <span>گزارش‌ها</span>
+      </button>
+    </nav>
+
+    <!-- محتوای اصلی -->
+    <main class="main-content">
+
+      <!-- تب خانه -->
+      <section class="tab-panel active" id="panel-home">
+        <div class="welcome-card">
+          <h2>سلام، ویزیتور عزیز 👋</h2>
+          <p>به دستیار هوشمند فیس دوکس خوش آمدید. برای شروع یکی از محصولات را انتخاب کنید یا از بخش گفتگو سوال بپرسید.</p>
+        </div>
+
+        <div class="quick-actions">
+          <h3>دسترسی سریع</h3>
+          <div class="quick-grid" id="quickGrid"></div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-num" id="statProducts">0</div>
+            <div class="stat-label">محصول فعال</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="statQueries">0</div>
+            <div class="stat-label">پرسش امروز</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="statReports">0</div>
+            <div class="stat-label">گزارش ثبت‌شده</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- تب محصولات -->
+      <section class="tab-panel" id="panel-products">
+        <div class="search-bar">
+          <input type="search" id="productSearch" placeholder="جستجوی محصول..." />
+        </div>
+        <div class="products-grid" id="productsGrid"></div>
+      </section>
+
+      <!-- تب گفتگو -->
+      <section class="tab-panel" id="panel-chat">
+        <div class="chat-header">
+          <select id="chatProductSelect" class="product-select"></select>
+          <button class="mic-btn" id="micBtn" title="ضبط سوال صوتی">
+            <span class="mic-icon">🎤</span>
+          </button>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+          <div class="chat-empty">
+            <div class="empty-icon">💬</div>
+            <p>سوال خود را بپرسید. برای ضبط صوتی، روی میکروفون بزنید.</p>
+          </div>
+        </div>
+
+        <div class="chat-input-area">
+          <div class="quick-questions" id="quickQuestions"></div>
+          <form class="chat-form" id="chatForm">
+            <input
+              type="text"
+              id="chatInput"
+              placeholder="سوال خود را بنویسید..."
+              autocomplete="off"
+              required
+            />
+            <button type="submit" class="send-btn" aria-label="ارسال">
+              <span>➤</span>
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- تب گزارش‌ها -->
+      <section class="tab-panel" id="panel-reports">
+        <div class="report-toolbar">
+          <h3>گزارش‌های ویزیت</h3>
+          <button class="btn-secondary" id="exportReportsBtn">خروجی JSON</button>
+        </div>
+        <div class="reports-list" id="reportsList"></div>
+      </section>
+    </main>
+
+    <!-- مودال ۳ جمله طلایی -->
+    <div class="modal" id="productModal" aria-hidden="true">
+      <div class="modal-backdrop" data-close></div>
+      <div class="modal-content">
+        <button class="modal-close" data-close aria-label="بستن">×</button>
+        <div class="modal-body" id="modalBody"></div>
+      </div>
+    </div>
+
+    <!-- نوتیفیکیشن -->
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </div>
+
+  <script src="js/products.js"></script>
+  <script src="js/ai-engine.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
